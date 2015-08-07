@@ -11,8 +11,12 @@
 
     <script type="text/javascript" charset="utf-8" src="cordova.js"></script>
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAMXiMdRK1vzvUP1Gy-P5WVu4sMB8BGsIc&sensor=true"></script>
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?libraries=places"></script>
     <script type="text/javascript" charset="utf-8">
-
+       
+       
+       var map;
+       var infoWindow;
     // Wait for device API libraries to load
     //
     document.addEventListener("deviceready", onDeviceReady, false);
@@ -50,10 +54,25 @@
         };
         
         var mapContent = document.getElementById('map_canvas');
-        var map = new google.maps.Map(mapContent, mapOptions);
+        map = new google.maps.Map(mapContent, mapOptions);
         
-        var marker = new google.maps.Marker({position: latLang, map: map});
+        var marker = new google.maps.Marker({
+            position: latLang, 
+            map: map, 
+            icon: 'img/current_loc.png',
+            animation: google.maps.Animation.DROP,
+            title: 'test'
+        });
         //map.initialize();
+        
+        var request = {
+            location: latLang,
+            radius: '500',
+            types: ['store']
+          };
+        infowindow = new google.maps.InfoWindow();
+        service = new google.maps.places.PlacesService(map);
+        service.nearbySearch(request, callback);
         
     }
     
@@ -63,6 +82,27 @@
         mapContent.innerHTML = error.message;
        // var geoElement = document.getElementById('geoData');
        // geoElement.innerHTML = (error.message);
+    }
+    
+    function callback(results, status) {
+        if (status == google.maps.places.PlacesServiceStatus.OK) {
+          for (var i = 0; i < results.length; i++) {
+            createMarker(results[i]);
+          }
+        }
+     }
+
+    function createMarker(place) {
+      var placeLoc = place.geometry.location;
+      var marker = new google.maps.Marker({
+        map: map,
+        position: placeLoc
+      });
+
+      google.maps.event.addListener(marker, 'click', function() {
+        infowindow.setContent(place.name);
+        infowindow.open(map, this);
+      });
     }
 
     </script>
