@@ -23,9 +23,9 @@
 /*set the content to be full-width and height except it doesn't overlap the header or footer*/
 #map-page .ui-content, #map_canvas {
     position : absolute;
-    top      : 40px;
+    top      : 23px;
     right    : 0;
-    bottom   : 39px;
+    bottom   : 1px;
     left     : 0;
 }
 #map-page .ui-footer {
@@ -33,7 +33,7 @@
     bottom   : 0;
     left     : 0;
     width    : 100%;
-    height   : 30px;
+    height   : 10px;
 }
         .controls {
         background-color: #fff;
@@ -56,6 +56,8 @@
       .controls:focus {
         border-color: #4d90fe;
       }
+      
+
     </style>
    
    <!-- <link rel="stylesheet" type="text/css" href="css/innova.css"> -->
@@ -191,6 +193,7 @@
     
     function callback(results, status) {
         if (status == google.maps.places.PlacesServiceStatus.OK) {
+            console.log("*********: " + results.length);
           for (var i = 0; i < results.length; i++) {
             createMarker(results[i]);
           }
@@ -214,8 +217,8 @@
                 return;
            }
            infowindow.setContent('<div><strong>' + result.name + '</strong><br>' +
-            '<br>' + result.formatted_address +
-        '<input type="image" src="img/flag_red.png" title="Report this location"/>');
+            '<br>' + result.formatted_address + '<br/>' +
+        '<input type="button" class="btn" value="Report" />');
         infowindow.open(map, marker);
         });
          
@@ -230,20 +233,21 @@
         <input id="pac-input" class="controls" type="text"
             placeholder="Enter a location">
         <div id="map_canvas">getting map data</div> -->
-       <div data-role="page" id="map-page">
-    <div data-role="header">
-        <h2>Take AMEX</h2>
-    </div>
-    <div data-role="content">
-        <input id="pac-input" class="controls" type="text"
-            placeholder="Enter a location">
-        <div id="map_canvas">getting map data</div>
-    </div>
-    <!--
-    <div data-role="footer">
-        <p>Footer</p>
-    </div> -->
-</div>
+    <div data-role="page" id="map-page">
+        <div data-role="header">
+            <h3>Take AMEX</h3>
+            <img src="img/user.png" class="ui-btn-right" style="width: 42px;" />
+        </div>
+        <div data-role="content">
+            <input id="pac-input" class="controls" type="text"
+                placeholder="Enter a location" />
+            <div id="map_canvas">getting map data</div>
+        </div>
+        <!--
+        <div data-role="footer">
+            <p>Footer</p>
+        </div> -->
+        </div>
       
   </body>
 </html>

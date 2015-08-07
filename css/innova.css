@@ -745,3 +745,30 @@ button[disabled],
 	outline-width: 1px;
 	outline-style: auto;
 }
+
+.btn {
+  background: #006890;
+  background-image: -webkit-linear-gradient(top, #006890, #2475ab);
+  background-image: -moz-linear-gradient(top, #006890, #2475ab);
+  background-image: -ms-linear-gradient(top, #006890, #2475ab);
+  background-image: -o-linear-gradient(top, #006890, #2475ab);
+  background-image: linear-gradient(to bottom, #006890, #2475ab);
+  -webkit-border-radius: 3;
+  -moz-border-radius: 3;
+  border-radius: 3px;
+  font-family: Arial;
+  color: #ffffff;
+  font-size: 12px;
+  padding: 5px 10px 5px 10px;
+  text-decoration: none;
+}
+
+.btn:hover {
+  background: #006890;
+  background-image: -webkit-linear-gradient(top, #006890, #2d89c2);
+  background-image: -moz-linear-gradient(top, #006890, #2d89c2);
+  background-image: -ms-linear-gradient(top, #006890, #2d89c2);
+  background-image: -o-linear-gradient(top, #006890, #2d89c2);
+  background-image: linear-gradient(to bottom, #006890, #2d89c2);
+  text-decoration: none;
+}
