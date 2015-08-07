@@ -2,13 +2,72 @@
 <html>
   <head>
     <title>Device Properties Example</title>
-    
+     <meta name="viewport" content="width=device-width, initial-scale=1"> 
+     <!-- <link rel="stylesheet" href="http://code.jquery.com/mobile/1.0.1/jquery.mobile-1.0.1.min.css" /> -->
+      <link rel="stylesheet" type="text/css" href="css/innova.css">
+      <link rel="stylesheet" type="text/css" href="css/jquery.mobile.icons.min.css">
+      <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile.structure-1.4.5.min.css" />
     <style>
         html{height: 100%}
-        body{height: 100%; margin: 0; padding: 0}
-        #map_canvas{height: 100%; width: 100%;}
-    </style>
+        /*body{height: 100%; margin: 0; padding: 0}
+        #map_canvas{height: 100%; width: 100%;}*/
+        html, body {
+    height : 100%;
+}
+#map-page {
+    height : 100%;
+}
+#map-page .ui-header {
+    //height : 40px;
+}
+/*set the content to be full-width and height except it doesn't overlap the header or footer*/
+#map-page .ui-content, #map_canvas {
+    position : absolute;
+    top      : 40px;
+    right    : 0;
+    bottom   : 39px;
+    left     : 0;
+}
+#map-page .ui-footer {
+    position : absolute;
+    bottom   : 0;
+    left     : 0;
+    width    : 100%;
+    height   : 30px;
+}
+        .controls {
+        background-color: #fff;
+        border-radius: 2px;
+        border: 1px solid transparent;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+        box-sizing: border-box;
+        font-family: Roboto;
+        font-size: 15px;
+        font-weight: 300;
+        height: 32px;
+        margin-left: 17px;
+        margin-top: 16px;
+        outline: none;
+        padding: 0 11px 0 13px;
+        text-overflow: ellipsis;
+        width: 70%;
+      }
 
+      .controls:focus {
+        border-color: #4d90fe;
+      }
+    </style>
+   
+   <!-- <link rel="stylesheet" type="text/css" href="css/innova.css"> -->
+
+   
+  
+<!--<script src="http://code.jquery.com/jquery-1.6.4.min.js"></script>
+ <script src="http://code.jquery.com/mobile/1.0.1/jquery.mobile-1.0.1.min.js"></script> -->
+   
+    <script type="text/javascript" src="js/jquery-1.11.3.min.js"></script>
+    <script type="text/javascript" src="js/jquery.mobile.custom.min.js"></script>
+    
     <script type="text/javascript" charset="utf-8" src="cordova.js"></script>
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAMXiMdRK1vzvUP1Gy-P5WVu4sMB8BGsIc&sensor=true"></script>
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?libraries=places"></script>
@@ -17,6 +76,7 @@
        
        var map;
        var infoWindow;
+       var service;
     // Wait for device API libraries to load
     //
     document.addEventListener("deviceready", onDeviceReady, false);
@@ -65,14 +125,60 @@
         });
         //map.initialize();
         
+        infowindow = new google.maps.InfoWindow();
+        var markerNew = new google.maps.Marker({
+          map: map
+        });
+        
         var request = {
             location: latLang,
             radius: '1500'
           };
-        infowindow = new google.maps.InfoWindow();
+        //infowindow = new google.maps.InfoWindow();
         service = new google.maps.places.PlacesService(map);
         service.nearbySearch(request, callback);
         
+       var input = /** @type {HTMLInputElement} */(
+      document.getElementById('pac-input'));
+
+    var autocomplete = new google.maps.places.Autocomplete(input);
+    autocomplete.bindTo('bounds', map);
+
+    map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+    
+    google.maps.event.addListener(markerNew, 'click', function() {
+    infowindow.open(map, markerNew);
+  });
+
+  google.maps.event.addListener(autocomplete, 'place_changed', function() {
+    infowindow.close();
+    var place = autocomplete.getPlace();
+    if (!place.geometry) {
+          return;
+    }
+
+    if (place.geometry.viewport) {
+      map.fitBounds(place.geometry.viewport);
+    } else {
+      map.setCenter(place.geometry.location);
+      map.setZoom(17);
+    }
+
+    // Set the position of the marker using the place ID and location
+    markerNew.setPlace(/** @type {!google.maps.Place} */ ({
+      placeId: place.place_id,
+      location: place.geometry.location
+    }));
+    markerNew.setVisible(true);
+
+    infowindow.setContent('<div><strong>' + place.name + '</strong><br>' +
+        '<br>' + place.formatted_address +
+        '<input type="image" src="img/flag_red.png" title="Report this location" />');
+    infowindow.open(map, markerNew);
+  });
+  
+ // google.maps.event.trigger(map, 'resize');
+  
     }
     
     function onError(error) {
@@ -97,17 +203,47 @@
         map: map,
         position: placeLoc
       });
-
+      
+      var req = {reference: place.reference};
+      
       google.maps.event.addListener(marker, 'click', function() {
-        infowindow.setContent(place.name);
-        infowindow.open(map, this);
+          
+        service.getDetails(place, function(result, status) {
+           if(status != google.maps.places.PlacesServiceStatus.OK) {
+                alert(status);
+                return;
+           }
+           infowindow.setContent('<div><strong>' + result.name + '</strong><br>' +
+            '<br>' + result.formatted_address +
+        '<input type="image" src="img/flag_red.png" title="Report this location"/>');
+        infowindow.open(map, marker);
+        });
+         
       });
+     
     }
 
     </script>
   </head>
   <body>
-      <h1>Take AMEX</h1>
-      <div id="map_canvas">getting map data</div>
+       <!-- <h1>Take AMEX</h1>
+        <input id="pac-input" class="controls" type="text"
+            placeholder="Enter a location">
+        <div id="map_canvas">getting map data</div> -->
+       <div data-role="page" id="map-page">
+    <div data-role="header">
+        <h2>Take AMEX</h2>
+    </div>
+    <div data-role="content">
+        <input id="pac-input" class="controls" type="text"
+            placeholder="Enter a location">
+        <div id="map_canvas">getting map data</div>
+    </div>
+    <!--
+    <div data-role="footer">
+        <p>Footer</p>
+    </div> -->
+</div>
+      
   </body>
 </html>
