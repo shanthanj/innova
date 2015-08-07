@@ -6,6 +6,8 @@
         id        = "com.phonegap.helloworld"
         version   = "1.0.0">
 
+    <preference name="phonegap-version" value="3.5.0" />
+    
     <name>Innova</name>
 
     <description>
@@ -15,6 +17,8 @@
     <author href="http://phonegap.com" email="support@phonegap.com">
         Prasanthan Jayaram
     </author>
+    
+    <gap:platform name="android" />
     
     <feature name="Device">
         <param name="android-package" value="org.apache.cordova.device.Device" />
@@ -26,6 +30,25 @@
         permission on your app, which PhoneGap requires.
     -->
     <preference name="permissions"                value="none"/>
+    
+    <gap:plugin name="org.apache.cordova.battery-status" />
+    <gap:plugin name="org.apache.cordova.camera" />
+    <gap:plugin name="org.apache.cordova.media-capture" />
+    <gap:plugin name="org.apache.cordova.console" />
+    <gap:plugin name="org.apache.cordova.contacts" />
+    <gap:plugin name="org.apache.cordova.device" />
+    <gap:plugin name="org.apache.cordova.device-motion" />
+    <gap:plugin name="org.apache.cordova.device-orientation" />
+    <gap:plugin name="org.apache.cordova.dialogs" />
+    <gap:plugin name="org.apache.cordova.file" />
+    <gap:plugin name="org.apache.cordova.file-transfer" />
+    <gap:plugin name="org.apache.cordova.geolocation" />
+    <gap:plugin name="org.apache.cordova.globalization" />
+    <gap:plugin name="org.apache.cordova.inappbrowser" />
+    <gap:plugin name="org.apache.cordova.media" />
+    <gap:plugin name="org.apache.cordova.network-information" />
+    <gap:plugin name="org.apache.cordova.splashscreen" />
+    <gap:plugin name="org.apache.cordova.vibration" />
 
     <!-- Customize your app and platform with the preference element. -->
     <preference name="orientation"                value="default" />        <!-- all: default means both landscape and portrait are enabled -->
