@@ -13,18 +13,38 @@
     // device APIs are available
     //
     function onDeviceReady() {
-        var element = document.getElementById('deviceProperties');
+       /* var element = document.getElementById('deviceProperties');
         element.innerHTML = 'Device Name: '     + device.name     + '<br />' +
                             'Device Cordova: '  + device.cordova  + '<br />' +
                             'Device Platform: ' + device.platform + '<br />' +
                             'Device UUID: '     + device.uuid     + '<br />' +
                             'Device Model: '    + device.model    + '<br />' +
                             'Device Version: '  + device.version  + '<br />';
+         */
+        
+        navigator.geolocation.getCurrentPosition(onSuccess, onError);
+        
+    }
+    
+    function onSuccess(position) {
+        var geoElement = document.getElementById('geoData');
+        geoElement.innerHTML = (
+                'Latitude: ' + position.coords.latitude + '<br />' +
+                'Longitude: ' + position.coords.longitude
+         );
+        
+    }
+    
+    function onError(error) {
+        console.log("Errr Occurred");
+        var geoElement = document.getElementById('geoData');
+        geoElement.innerHTML = (error.message);
     }
 
     </script>
   </head>
   <body>
-    <p id="deviceProperties">Loading device properties...</p>
+      <h1>Geo Location</h1>
+      <div id="geoData">Getting Location Data</div>
   </body>
 </html>
