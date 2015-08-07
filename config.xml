@@ -16,7 +16,10 @@
         Prasanthan Jayaram
     </author>
     
-    <feature name="http://api.phonegap.com/1.0/device" />
+    <feature name="Device">
+        <param name="android-package" value="org.apache.cordova.device.Device" />
+    </feature>
+</widget>
 
     <!--
         If you do not want any permissions to be added to your app, add the
