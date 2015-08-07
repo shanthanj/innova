@@ -2,8 +2,15 @@
 <html>
   <head>
     <title>Device Properties Example</title>
+    
+    <style>
+        html{height: 100%}
+        body{height: 100%; margin: 0; padding: 0}
+        #map_canvas{height: 100%; width: 100%;}
+    </style>
 
     <script type="text/javascript" charset="utf-8" src="cordova.js"></script>
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAMXiMdRK1vzvUP1Gy-P5WVu4sMB8BGsIc&sensor=true"></script>
     <script type="text/javascript" charset="utf-8">
 
     // Wait for device API libraries to load
@@ -27,24 +34,41 @@
     }
     
     function onSuccess(position) {
-        var geoElement = document.getElementById('geoData');
+        /*var geoElement = document.getElementById('geoData');
         geoElement.innerHTML = (
                 'Latitude: ' + position.coords.latitude + '<br />' +
                 'Longitude: ' + position.coords.longitude
-         );
+         );*/
+        var latLang = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+        var mapOptions = {
+            center: latLang,
+            panControl: false,
+            zoomControl: true,
+            zoom: 16,
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+            
+        };
+        
+        var mapContent = document.getElementById('map_canvas');
+        var map = new google.maps.Map(mapContent, mapOptions);
+        
+        var marker = new google.maps.Marker({position: latLang, map: map});
+        //map.initialize();
         
     }
     
     function onError(error) {
         console.log("Errr Occurred");
-        var geoElement = document.getElementById('geoData');
-        geoElement.innerHTML = (error.message);
+        var mapContent = document.getElementById('map_canvas');
+        mapContent.innerHTML = error.message;
+       // var geoElement = document.getElementById('geoData');
+       // geoElement.innerHTML = (error.message);
     }
 
     </script>
   </head>
   <body>
-      <h1>Geo Location</h1>
-      <div id="geoData">Getting Location Data</div>
+      <h1>Take AMEX</h1>
+      <div id="map_canvas">getting map data</div>
   </body>
 </html>
