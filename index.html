@@ -61,11 +61,6 @@
     </style>
    
    <!-- <link rel="stylesheet" type="text/css" href="css/innova.css"> -->
-
-   
-  
-<!--<script src="http://code.jquery.com/jquery-1.6.4.min.js"></script>
- <script src="http://code.jquery.com/mobile/1.0.1/jquery.mobile-1.0.1.min.js"></script> -->
    
     <script type="text/javascript" src="js/jquery-1.11.3.min.js"></script>
     <script type="text/javascript" src="js/jquery.mobile.custom.min.js"></script>
@@ -74,7 +69,13 @@
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAMXiMdRK1vzvUP1Gy-P5WVu4sMB8BGsIc&sensor=true"></script>
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?libraries=places"></script>
     <script type="text/javascript" charset="utf-8">
-       
+
+    
+    $(document).on('pageinit', function() {
+        $(document).on('click', '.btn', function() {
+            $.mobile.changePage($("#report-details-page"), { transition: "slideup"}); 
+        });
+    });
        
        var map;
        var infoWindow;
@@ -100,11 +101,7 @@
     }
     
     function onSuccess(position) {
-        /*var geoElement = document.getElementById('geoData');
-        geoElement.innerHTML = (
-                'Latitude: ' + position.coords.latitude + '<br />' +
-                'Longitude: ' + position.coords.longitude
-         );*/
+       
         var latLang = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
         var mapOptions = {
             center: latLang,
@@ -140,6 +137,9 @@
         service = new google.maps.places.PlacesService(map);
         service.nearbySearch(request, callback);
         
+        google.maps.event.addListener(markerNew, 'click', function() {
+        infowindow.open(map, markerNew);
+        
        var input = /** @type {HTMLInputElement} */(
       document.getElementById('pac-input'));
 
@@ -148,8 +148,7 @@
 
     map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
     
-    google.maps.event.addListener(markerNew, 'click', function() {
-    infowindow.open(map, markerNew);
+    
   });
 
   google.maps.event.addListener(autocomplete, 'place_changed', function() {
@@ -173,9 +172,17 @@
     }));
     markerNew.setVisible(true);
 
-    infowindow.setContent('<div><strong>' + place.name + '</strong><br>' +
+    var photos = place.photos;
+    if(photos) {
+        var placeImgUrl = place.photos[0].getUrl({'maxWidth': 50, 'maxHeight': 50});
+        infowindow.setContent('<div><strong>' + place.name + '</strong><br>' +
         '<br>' + place.formatted_address +
-        '<input type="image" src="img/flag_red.png" title="Report this location" />');
+        '<input type="image" src="'+ placeImgUrl +'" title="Report this location" />');
+    } else {
+        infowindow.setContent('<div><strong>' + result.name + '</strong><br>' +
+            result.formatted_address + '<br/>' +
+        '<input name="btnReport" type="button" class="btn" value="Report" />');
+    }
     infowindow.open(map, markerNew);
   });
   
@@ -216,10 +223,26 @@
                 alert(status);
                 return;
            }
-           infowindow.setContent('<div><strong>' + result.name + '</strong><br>' +
-            '<br>' + result.formatted_address + '<br/>' +
-        '<input type="button" class="btn" value="Report" />');
-        infowindow.open(map, marker);
+           
+           var photos = place.photos;
+           if(photos) {
+               var placeImgUrl = place.photos[0].getUrl({'maxWidth': 50, 'maxHeight': 50});
+               infowindow.setContent(
+                       '<table><tr><td rowspan="2">'+
+                       '<img src="'+ placeImgUrl +'" title="Report this location" />' +
+                       '</td><td>' +
+   '<strong>' + result.name + '</strong>' +
+   '</td></tr><tr><td>' +
+            result.formatted_address +
+            '</td></tr></table>'+
+        '<input name="btnReport" id="'+ place.place_id +'" type="button" class="btn" value="Report" />');
+           } else {
+               infowindow.setContent('<div><strong>' + result.name + '</strong><br>' +
+            result.formatted_address + '<br/>' +
+        '<input name="btnReport" type="button" class="btn" value="Report" />');
+           }
+           
+infowindow.open(map, marker);
         });
          
       });
@@ -229,10 +252,8 @@
     </script>
   </head>
   <body>
-       <!-- <h1>AMEX Brand Ambassador</h1>
-        <input id="pac-input" class="controls" type="text"
-            placeholder="Enter a location">
-        <div id="map_canvas">getting map data</div> -->
+    
+    <!-- Main Map Page -->
     <div data-role="page" id="map-page">
         <div data-role="header">
             <h3>Brand Ambassador</h3>
@@ -242,12 +263,59 @@
             <input id="pac-input" class="controls" type="text"
                 placeholder="Enter a location" />
             <div id="map_canvas">getting map data</div>
+           
         </div>
         <!--
         <div data-role="footer">
             <p>Footer</p>
         </div> -->
+    </div>
+    <!-- End Map Page -->
+    
+    <!-- Report Details Screen -->
+    <div data-role="page" id="report-details-page">
+        <div data-role="header">
+            <a href="#map-page" data-icon="arrow-l" data-iconpos="notext">Back</a>
+            <h3>Report Details</h3>
+            <img src="img/user.png" class="ui-btn-right" style="width: 42px;" />
         </div>
-      
+        
+        <div data-role="content">
+            
+                <label for="place_name" style="font-size: smaller">Place/Business:</label>
+                <input type="text" name="place_name" id="place_name" value="" data-mini="true" />
+           
+            
+           
+                <label for="place_address" style="font-size: smaller">Address:</label>
+                <input type="text" name="place_address" id="place_address" value="" data-mini="true" />
+            
+            <!--
+            <div data-role="fieldcontain">
+                <label style="width: 30%">
+                    <input type="checkbox" name="chckSupp" data-mini="true" data-theme="b">Suppression
+                </label>
+                 <label style="width: 30%">
+                    <input type="checkbox" name="chckOptBlue" data-mini="true" data-theme="b">OptBlue
+                </label>
+            </div>
+            -->
+           <fieldset data-role="controlgroup" data-iconpos="right">
+                    <input type="checkbox" name="checkbox-h-6a" id="checkbox-h-6a" data-theme="b" data-mini="true">
+                    <label for="checkbox-h-6a">Suppression</label>
+                    <input type="checkbox" name="checkbox-h-6b" id="checkbox-h-6b" data-theme="b" data-mini="true">
+                    <label for="checkbox-h-6b">OptBlue</label>
+            </fieldset>
+            
+            <div data-role="fieldcontain">
+                <label for="comments" style="font-size: smaller">Comments:</label>
+                <textarea cols="40" rows="8" name="comments" id="comments" data-mini="true"></textarea>
+            </div>
+            <a href="#" id="btnReport" data-role="button">Report</a>
+            <a href="#" id="btnSave" data-role="button">Save Draft</a>
+        </div>
+    </div>
+    <!-- End Details Screen -->
+    
   </body>
 </html>
