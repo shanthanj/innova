@@ -75,6 +75,10 @@
 
     <!-- Plugins -->
 
+<icon src="img/mipmap-mdpi/ic_launcher.png" gap:platform="android" gap:qualifier="mdpi" />
+<icon src="img/mipmap-hdpi/ic_launcher.png" gap:platform="android" gap:qualifier="hdpi" />
+<icon src="img/mipmap-xhdpi/ic_launcher.png" gap:platform="android" gap:qualifier="xhdpi" />
+<icon src="img/mipmap-xxhdpi/ic_launcher.png" gap:platform="android" gap:qualifier="xxhdpi" />
     
 
     <!--
