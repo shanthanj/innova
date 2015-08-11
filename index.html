@@ -85,16 +85,37 @@
         var suppressionInd = $('#suppressionInd').is(':checked');
         var optBlueInd = $('#optBlueInd').is(':checked');
         var comments = $('#comments').val();
+         var imgMerchant;
+        convertImgToBase64URL($('#placeImg').attr('src'), function(base64Img) {
+            imgMerchant = base64Img;
+        });
         
         $.ajax({
             type: "POST",
             url: "http://1-dot-hack2015-1029.appspot.com/ReportMerchant",
-            data: { "adsIDOfReporter": adsId, "emailOfReporter" : employeeEmail, "businessName" : placeName, "address" : placeAddr, "suppressionInd" : suppressionInd, "optBlueInd" : optBlueInd, "comments" : comments},
+            data: { "adsIDOfReporter": adsId, "emailOfReporter" : employeeEmail, "businessName" : placeName, "address" : placeAddr, "suppression" : suppressionInd, "optBlue" : optBlueInd, "comments" : comments, "imgMerchant" : imgMerchant},
             success: function(data){
-                alert(data);
+                //Show message
+                alert("Your report has been submitted.")
             }
         });
         
+    }
+    
+    function convertImgToBase64URL(url, callback, outputFormat){
+        var img = new Image();
+        img.crossOrigin = 'Anonymous';
+        img.onload = function(){
+            var canvas = document.createElement('CANVAS'),
+            ctx = canvas.getContext('2d'), dataURL;
+            canvas.height = this.height;
+            canvas.width = this.width;
+            ctx.drawImage(this, 0, 0);
+            dataURL = canvas.toDataURL(outputFormat);
+            callback(dataURL);
+            canvas = null; 
+        };
+        img.src = url;
     }
     
     function loadCamera() {
