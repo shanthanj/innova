@@ -102,7 +102,7 @@
         
          var imgMerchant = null;
         //if ($('#placeImg').attr('src') != null) {
-            convertImgToBase64URL($('#placeImg').src, function(base64Img) {
+            convertImgToBase64URL($('#placeImg').attr('src'), function(base64Img) {
                 imgMerchant = base64Img;
             });
        // }
@@ -146,7 +146,7 @@
             var image = document.getElementById('placeImg');
             image.style.display = 'block';
             image.src = "data:image/jpeg;base64," + imageData;
-            alert("Source: "+$('#placeImg').src);
+            alert("Source: "+$('#placeImg').attr('src'));
         }
 
         function onFail(message) {
