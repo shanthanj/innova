@@ -117,7 +117,7 @@
     <script type="text/javascript" charset="utf-8">
 
     var reportObj;
-    var globalAds;
+    var globalAds = "mvahee";
     
     function setReportObj(placeName, placeAddr) {
         reportObj = new Object();
@@ -216,11 +216,12 @@
         });
     });
     
+    /*
     $(document).on('pagebeforeshow', '#map-page', function () {
         navigator.geolocation.getCurrentPosition(onSuccess, onError);
        
     });
-    
+    */
     
     $(document).on('pagebeforeshow', '#report-details-page', function () {
         if (reportObj != null) {
@@ -256,14 +257,14 @@
                             'Device Version: '  + device.version  + '<br />';
          */
         
-        //navigator.geolocation.getCurrentPosition(onSuccess, onError);
+       navigator.geolocation.getCurrentPosition(onSuccess, onError);
         //alert('device ready');
         
         
     }
     
     function onSuccess(position) {
-       // alert('succ');
+       
        while(position == null) {
            console.log("position is null")
            if (position != null) {
@@ -441,6 +442,7 @@ infowindow.open(map, marker);
 <body>
     
     <!-- Login Page -->
+    <!--
     <div data-role="page" id="login-page">
         <div data-role="header">
             <h3>Brand Ambassador</h3>
@@ -462,7 +464,7 @@ infowindow.open(map, marker);
            
         </div>
     </div>
-    
+    -->
     <!-- End Map Page -->
     
     <!-- Main Map Page -->
