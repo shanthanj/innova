@@ -99,9 +99,10 @@
         var suppressionInd = $('#suppressionInd').is(':checked');
         var optBlueInd = $('#optBlueInd').is(':checked');
         var comments = $('#comments').val();
+        
          var imgMerchant = null;
         //if ($('#placeImg').attr('src') != null) {
-            convertImgToBase64URL($('#placeImg').attr('src'), function(base64Img) {
+            convertImgToBase64URL($('#placeImg').src, function(base64Img) {
                 imgMerchant = base64Img;
             });
        // }
@@ -142,12 +143,10 @@
         });
 
         function onSuccess(imageData) {
-            //var image = document.getElementById('placeImg');
-           // image.style.display = 'block';
-            $('#placeImg').css('display', 'block');
-            $('#placeImg').css('src', 'data:image/jpeg;base64,'+imageData);
-            //image.src = "data:image/jpeg;base64," + imageData;
-            alert("Source: "+$('#placeImg').attr('src'));
+            var image = document.getElementById('placeImg');
+            image.style.display = 'block';
+            image.src = "data:image/jpeg;base64," + imageData;
+            alert("Source: "+$('#placeImg').src);
         }
 
         function onFail(message) {
