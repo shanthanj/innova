@@ -100,7 +100,14 @@
         var optBlueInd = $('#optBlueInd').is(':checked');
         var comments = $('#comments').val();
         
+       //var imgData = 'data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg==';
+       //var image = document.getElementById('placeImg');
+       //     image.style.display = 'block';
+        //    image.src = imgData;
+       
+       
          var imgMerchant = $('#placeImg').attr('src');
+         alert("in submit: "+imgMerchant);
         /*
             convertImgToBase64URL($('#placeImg').attr('src'), function(base64Img) {
                 imgMerchant = base64Img;
@@ -146,7 +153,9 @@
             var image = document.getElementById('placeImg');
             image.style.display = 'block';
             image.src = "data:image/jpeg;base64," + imageData;
+            alert("suc: "+imageData);
             //alert("Source: "+$('#placeImg').attr('src'));
+            
         }
 
         function onFail(message) {
@@ -401,7 +410,7 @@ infowindow.open(map, marker);
                 
                 <label for="place_image" style="font-size: smaller">Image:</label>
                 <button class="ui-btn ui-shadow ui-corner-all ui-btn-icon-left ui-icon-camera" data-theme="b" style="font-size: .8em" onclick="loadCamera();">Add Image</button>
-                <img id="placeImg" src="" style="display:none; width: 48px; height: 48px;" />
+                <img id="placeImg" src="" style="width: 48px; height: 48px;" />
             
             <!--
             <div data-role="fieldcontain">
