@@ -240,6 +240,9 @@
     */
     
     $(document).on('pagebeforeshow', '#report-details-page', function () {
+        var image = document.getElementById('placeImg');
+            image.style.display = 'block';
+            image.src = "";
         if (reportObj != null) {
             $('#place_name').val(reportObj.placeName);
             $('#place_address').val(reportObj.placeAddr);
