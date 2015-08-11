@@ -217,7 +217,7 @@
     
     $(document).on('pagebeforeshow', '#map-page', function () {
         navigator.geolocation.getCurrentPosition(onSuccess, onError);
-        
+       
     });
     
     
@@ -263,6 +263,12 @@
     
     function onSuccess(position) {
        // alert('succ');
+       while(position == null) {
+           console.log("position is null")
+           if (position != null) {
+               return;
+           }
+       }
         var latLang = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
         var mapOptions = {
             center: latLang,
@@ -367,7 +373,7 @@
         }
     });
   });
-  
+ 
   $('#overlay').hide();
 }
     
