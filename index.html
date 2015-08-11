@@ -142,9 +142,12 @@
         });
 
         function onSuccess(imageData) {
-            var image = document.getElementById('placeImg');
-            image.style.display = 'block';
-            image.src = "data:image/jpeg;base64," + imageData;
+            //var image = document.getElementById('placeImg');
+           // image.style.display = 'block';
+            $('#placeImg').css('display', 'block');
+            $('#placeImg').css('src', 'data:image/jpeg;base64,'+imageData);
+            //image.src = "data:image/jpeg;base64," + imageData;
+            alert("Source: "+$('#placeImg').attr('src'));
         }
 
         function onFail(message) {
