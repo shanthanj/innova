@@ -133,8 +133,8 @@
             data: { "adsID": adsId },
             dataType: "json",
             success: function(data) {
-                alert(data.result.name + ":" + data.result.leads);
-                $('#myRank').html(data.result.name + " - " + data.result.leads);
+                alert(data.result[0].name + ":" + data.result[0].leads);
+                $('#myRank').html(data.result[0].name + " - " + data.result[0].leads);
             }
         });
     }
