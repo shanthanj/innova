@@ -58,6 +58,17 @@
       .controls:focus {
         border-color: #4d90fe;
       }
+      
+      .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 10;
+            background-color: rgba(0,0,0,0.5); /*dim the background*/
+            background: rgba(0,0,0,0.5) url('img/ajax-loader.gif') no-repeat center;
+      }
      
     </style>
    
@@ -78,6 +89,9 @@
     }
     
     function submitReport() {
+        
+        $('#overlayReport').css('display', 'block');
+        
         var adsId = "6381399";
         var employeeEmail = "Prasanthan.Jayaram@aexp.com";
         var placeName = reportObj.placeName;
@@ -85,18 +99,21 @@
         var suppressionInd = $('#suppressionInd').is(':checked');
         var optBlueInd = $('#optBlueInd').is(':checked');
         var comments = $('#comments').val();
-         var imgMerchant;
-        convertImgToBase64URL($('#placeImg').attr('src'), function(base64Img) {
-            imgMerchant = base64Img;
-        });
-        
+         var imgMerchant = null;
+        if ($('#placeImg').attr('src') != null) {
+            convertImgToBase64URL($('#placeImg').attr('src'), function(base64Img) {
+                imgMerchant = base64Img;
+            });
+        }
         $.ajax({
             type: "POST",
             url: "http://1-dot-hack2015-1029.appspot.com/ReportMerchant",
             data: { "adsIDOfReporter": adsId, "emailOfReporter" : employeeEmail, "businessName" : placeName, "address" : placeAddr, "suppression" : suppressionInd, "optBlue" : optBlueInd, "comments" : comments, "imgMerchant" : imgMerchant},
             success: function(data){
                 //Show message
-                alert("Your report has been submitted.")
+                //alert("Your report has been submitted.");
+                $('#overlayReport').css('display', 'none');
+                $('#lblResponse').text("Your report has been submitted!");
             }
         });
         
@@ -277,6 +294,8 @@
         }
     });
   });
+  
+  $('#overlay').hide();
 }
     
 function onError(error) {
@@ -348,6 +367,7 @@ infowindow.open(map, marker);
             <img src="img/user.png" class="ui-btn-right" style="width: 42px;" />
         </div>
         <div data-role="content">
+            <div id="overlay" class="overlay" ></div>
             <input id="pac-input" class="controls" type="text"
                 placeholder="Enter a location" />
             <div id="map_canvas">getting map data</div>
@@ -369,7 +389,7 @@ infowindow.open(map, marker);
         </div>
         
         <div data-role="content">
-            
+                <div id="overlayReport" class="overlay" style="display:none;"></div>
                 <label for="place_name" style="font-size: smaller">Place/Business:</label>
                 <input type="text" name="place_name" id="place_name" value="" data-mini="true" />
            
@@ -378,7 +398,7 @@ infowindow.open(map, marker);
                 
                 <label for="place_image" style="font-size: smaller">Image:</label>
                 <button class="ui-btn ui-shadow ui-corner-all ui-btn-icon-left ui-icon-camera" data-theme="b" style="font-size: .8em" onclick="loadCamera();">Add Image</button>
-                <img id="placeImg" src="" style="display:none; width:60px; height:60px;" />
+               
             
             <!--
             <div data-role="fieldcontain">
@@ -402,6 +422,7 @@ infowindow.open(map, marker);
                 <textarea cols="40" rows="8" name="comments" id="comments" data-mini="true"></textarea>
             </div>
             <a href="#" id="btnReport" data-role="button">Report</a>
+            <label id="lblResponse" style="color: #006890; font-style: bold;"></label>
            <!-- <a href="#" id="btnSave" data-role="button">Save Draft</a> -->
         </div>
     </div>
