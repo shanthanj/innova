@@ -100,27 +100,17 @@
         var optBlueInd = $('#optBlueInd').is(':checked');
         var comments = $('#comments').val();
         
-       //var imgData = 'data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg==';
-       //var image = document.getElementById('placeImg');
-       //     image.style.display = 'block';
-        //    image.src = imgData;
-       
-       
-         var imgMerchant = $('#placeImg').attr('src');
-         alert("in submit: "+imgMerchant);
-        /*
-            convertImgToBase64URL($('#placeImg').attr('src'), function(base64Img) {
-                imgMerchant = base64Img;
-            });
-       */
-        
-        $.ajax({
+        var imgMerchant = $('#placeImg').attr('src');
+         
+       $.ajax({
             type: "POST",
             url: "http://1-dot-hack2015-1029.appspot.com/ReportMerchant",
             data: { "adsIDOfReporter": adsId, "emailOfReporter" : employeeEmail, "businessName" : placeName, "address" : placeAddr, "suppression" : suppressionInd, "optBlue" : optBlueInd, "comments" : comments, "imgMerchant" : imgMerchant},
+            dataType: "text",
             success: function(data){
                 //Show message
                 //alert("Your report has been submitted.");
+                alert(data);
                 $('#overlayReport').css('display', 'none');
                 $('#lblResponse').text("Your report has been submitted!");
             }
@@ -153,8 +143,7 @@
             var image = document.getElementById('placeImg');
             image.style.display = 'block';
             image.src = "data:image/jpeg;base64," + imageData;
-            alert("suc: "+imageData);
-            //alert("Source: "+$('#placeImg').attr('src'));
+             //alert("Source: "+$('#placeImg').attr('src'));
             
         }
 
