@@ -81,6 +81,7 @@
     float:left;
       }
       
+      /*
       #rank1 {
           background: url('img/star.png') repeat-x;
           width: 80px;   
@@ -105,6 +106,7 @@
           background: url('img/star.png') repeat-x;
           width: 16px;   
       }
+      */
      
     </style>
    
@@ -145,11 +147,11 @@
             url: 'http://1-dot-hack2015-1029.appspot.com/GetLeads',
             dataType: 'json',
             success: function(data) {
-                $('#rank1Detail').html(data.result[0].name + " - " + data.result[0].leads + " Leads");
-                $('#rank2Detail').html(data.result[1].name + " - " + data.result[1].leads + " Leads");
-                $('#rank3Detail').html(data.result[2].name + " - " + data.result[2].leads + " Leads");
-                $('#rank4Detail').html(data.result[3].name + " - " + data.result[3].leads + " Leads");
-                $('#rank5Detail').html(data.result[4].name + " - " + data.result[4].leads + " Leads");
+                $('#rank1Detail').html("<b>#1</b>&nbsp;&nbsp;"+data.result[0].name + " - " + data.result[0].leads + " Leads");
+                $('#rank2Detail').html("<b>#2</b>&nbsp;&nbsp;"+data.result[1].name + " - " + data.result[1].leads + " Leads");
+                $('#rank3Detail').html("<b>#3</b>&nbsp;&nbsp;"+data.result[2].name + " - " + data.result[2].leads + " Leads");
+                $('#rank4Detail').html("<b>#4</b>&nbsp;&nbsp;"+data.result[3].name + " - " + data.result[3].leads + " Leads");
+                $('#rank5Detail').html("<b>#5</b>&nbsp;&nbsp;"+data.result[4].name + " - " + data.result[4].leads + " Leads");
             }
         });
     }
@@ -223,6 +225,7 @@
         });
         
         $(document).on('click', '#manualReport', function() {
+            reportObj = new Object();
             $.mobile.changePage($("#report-details-page"), { transition: "slideup"}); 
         });
         
@@ -241,8 +244,14 @@
     
     $(document).on('pagebeforeshow', '#report-details-page', function () {
         var image = document.getElementById('placeImg');
-            image.style.display = 'block';
-            image.src = "";
+        image.style.display = 'block';
+        image.src = "";
+        $('#place_name').text('');
+        $('#place_address').text('');
+        $('#optBlueInd').removeAttr('checked').checkboxradio('refresh');
+        $('#suppressionInd').removeAttr('checked').checkboxradio('refresh');
+        $('#lblResponse').text('');
+        $('#comments').val('');
         if (reportObj != null) {
             $('#place_name').val(reportObj.placeName);
             $('#place_address').val(reportObj.placeAddr);
@@ -524,25 +533,25 @@ infowindow.open(map, marker);
     <div data-role="page" data-url="rank-page" id="rank-page">
         <div data-role="header">
             <a href="#map-page" data-icon="arrow-l" data-iconpos="notext">Back</a>
-            <h3>Leader board Rankings</h3>
+            <h3>LEADERBOARD</h3>
             <img src="img/user.png" class="ui-btn-right" style="width: 42px;" />
         </div>
         <div data-role="content">
             <div id="lbOverlay" class="overlay" style="display:none"></div>
             
-            <div style="background-color: #002663; color: #ffffff; padding: 10px; text-align: center; font-style: bold;">Your Rank</div>
+            <div style="background-color: #002663; color: #ffffff; padding: 10px; text-align: center; font-style: bold;">Your Leads</div>
             <ul data-role="listview" data-filter="false" data-inset="true">
                <li id="myRank">Prasanthan Jayaram - 1643 Leads</li> 
             </ul>
             
             
-            <div style="background-color: #002663; color: #ffffff; padding: 10px; text-align: center; font-style: bold;">Top-5 Rankings</div>
+            <div style="background-color: #002663; color: #ffffff; padding: 10px; text-align: center; font-style: bold;">Top5 Ambassadors</div>
             <ul data-role="listview" data-filter="false" data-inset="true">
-                <li><div id="rank1">&nbsp;</div><div id="rank1Detail">Prasanthan Jayaram - 1643 Leads</div></li>
-                <li><div id="rank2">&nbsp;</div><div id="rank2Detail">Mahen Vaheessan - 1243 Leads</div></li>
-                <li><div id="rank3">&nbsp;</div><div id="rank3Detail">Wasie Bala - 876 Leads</div></li>
-                <li><div id="rank4">&nbsp;</div><div id="rank4Detail">Kiran Mutyala - 650 Leads</div></li>
-                <li><div id="rank5">&nbsp;</div><div id="rank5Detail">Paul Ryan - 343 Leads</div></li>
+                <li><div id="rank1Detail">Prasanthan Jayaram - 1643 Leads</div></li>
+                <li><div id="rank2Detail">Mahen Vaheessan - 1243 Leads</div></li>
+                <li><div id="rank3Detail">Wasie Bala - 876 Leads</div></li>
+                <li><div id="rank4Detail">Kiran Mutyala - 650 Leads</div></li>
+                <li><div id="rank5Detail">Paul Ryan - 343 Leads</div></li>
                 
             </ul>
             
@@ -595,7 +604,7 @@ infowindow.open(map, marker);
                 <label for="comments" style="font-size: smaller">Comments:</label>
                 <textarea cols="40" rows="8" name="comments" id="comments" data-mini="true"></textarea>
             </div>
-            <a href="#" id="btnReport" data-role="button">Report</a>
+            <a href="#" id="btnReport" data-role="button">Submit</a>
             <label id="lblResponse" style="color: #006890; font-style: bold;"></label>
            <!-- <a href="#" id="btnSave" data-role="button">Save Draft</a> -->
         </div>

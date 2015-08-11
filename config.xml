@@ -79,10 +79,10 @@
 
     <!-- Plugins -->
 
-<icon src="img/mipmap-mdpi/ic_launcher.png" gap:platform="android" gap:qualifier="mdpi" />
-<icon src="img/mipmap-hdpi/ic_launcher.png" gap:platform="android" gap:qualifier="hdpi" />
-<icon src="img/mipmap-xhdpi/ic_launcher.png" gap:platform="android" gap:qualifier="xhdpi" />
-<icon src="img/mipmap-xxhdpi/ic_launcher.png" gap:platform="android" gap:qualifier="xxhdpi" />
+<icon src="img/mipmap-mdpi/brand-ex48.png" gap:platform="android" gap:qualifier="mdpi" />
+<icon src="img/mipmap-hdpi/brand-ex72.png" gap:platform="android" gap:qualifier="hdpi" />
+<icon src="img/mipmap-xhdpi/brand-ex96.png" gap:platform="android" gap:qualifier="xhdpi" />
+<icon src="img/mipmap-xxhdpi/brand-ex144.png" gap:platform="android" gap:qualifier="xxhdpi" />
     
 
     <!--
