@@ -128,13 +128,28 @@
     function getMyRankings(adsId) {
         
         $.ajax({
-            type: "POST",
+            type: "GET",
             url: 'http://1-dot-hack2015-1029.appspot.com/GetLeads',
             data: { "adsID": adsId },
-            dataType: "json",
+            dataType: 'json',
             success: function(data) {
-                alert(data.result[0].name + ":" + data.result[0].leads);
-                $('#myRank').html(data.result[0].name + " - " + data.result[0].leads);
+                //alert(data.result[0].name + ":" + data.result[0].leads);
+                $('#myRank').html(data.result[0].name + " - " + data.result[0].leads + " Leads");
+            }
+        });
+    }
+    
+    function getTop5Rankings() {
+        $.ajax({
+            type: "GET",
+            url: 'http://1-dot-hack2015-1029.appspot.com/GetLeads',
+            dataType: 'json',
+            success: function(data) {
+                $('#rank1Detail').html(data.result[0].name + " - " + data.result[0].leads + " Leads");
+                $('#rank2Detail').html(data.result[1].name + " - " + data.result[1].leads + " Leads");
+                $('#rank3Detail').html(data.result[2].name + " - " + data.result[2].leads + " Leads");
+                $('#rank4Detail').html(data.result[3].name + " - " + data.result[3].leads + " Leads");
+                $('#rank5Detail').html(data.result[4].name + " - " + data.result[4].leads + " Leads");
             }
         });
     }
@@ -519,11 +534,12 @@ infowindow.open(map, marker);
             
             <div style="background-color: #002663; color: #ffffff; padding: 10px; text-align: center; font-style: bold;">Top-5 Rankings</div>
             <ul data-role="listview" data-filter="false" data-inset="true">
-                <li><div class="rank_parent"><div id="rank1">&nbsp;</div><div class="rank_child">Prasanthan Jayaram - 1643 Leads</div></div></li>
-                <li><div class="rank_parent"><div id="rank2">&nbsp;</div><div class="rank_child">Mahen Vahee - 1025 Leads</div></div></li>
-                <li><div class="rank_parent"><div id="rank3">&nbsp;</div><div class="rank_child">Kiran Mutyala - 876 Leads</div></div></li>
-                <li><div class="rank_parent"><div id="rank4">&nbsp;</div><div class="rank_child">Wasie Bala - 600 Leads</div></div></li>
-                <li><div class="rank_parent"><div id="rank5">&nbsp;</div><div class="rank_child">Paul Ryan - 250 Leads</div></div></li>
+                <li><div id="rank1">&nbsp;</div><div id="rank1Detail">Prasanthan Jayaram - 1643 Leads</div></li>
+                <li><div id="rank2">&nbsp;</div><div id="rank2Detail">Mahen Vaheessan - 1243 Leads</div></li>
+                <li><div id="rank3">&nbsp;</div><div id="rank3Detail">Wasie Bala - 876 Leads</div></li>
+                <li><div id="rank4">&nbsp;</div><div id="rank4Detail">Kiran Mutyala - 650 Leads</div></li>
+                <li><div id="rank5">&nbsp;</div><div id="rank5Detail">Paul Ryan - 343 Leads</div></li>
+                
             </ul>
             
             
