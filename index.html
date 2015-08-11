@@ -100,13 +100,13 @@
         var optBlueInd = $('#optBlueInd').is(':checked');
         var comments = $('#comments').val();
         
-         var imgMerchant = null;
-        //if ($('#placeImg').attr('src') != null) {
+         var imgMerchant = $('#placeImg').attr('src');
+        /*
             convertImgToBase64URL($('#placeImg').attr('src'), function(base64Img) {
                 imgMerchant = base64Img;
             });
-       // }
-        alert(imgMerchant);
+       */
+        
         $.ajax({
             type: "POST",
             url: "http://1-dot-hack2015-1029.appspot.com/ReportMerchant",
@@ -146,7 +146,7 @@
             var image = document.getElementById('placeImg');
             image.style.display = 'block';
             image.src = "data:image/jpeg;base64," + imageData;
-            alert("Source: "+$('#placeImg').attr('src'));
+            //alert("Source: "+$('#placeImg').attr('src'));
         }
 
         function onFail(message) {
