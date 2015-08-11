@@ -125,14 +125,15 @@
         reportObj.placeAddr = placeAddr;
     }
     
-    function getRankings(adsId) {
+    function getMyRankings(adsId) {
         $.ajax({
-            type: "GET",
+            type: "POST",
             url: 'http://1-dot-hack2015-1029.appspot.com/GetLeads',
             data: { "adsID": adsId },
             dataType: "json",
             success: function(data) {
                 alert(data.result.name + ":" + data.result.leads);
+                $('#myRank').html(data.result.name + " - " + data.result.leads);
             }
         });
     }
@@ -229,7 +230,7 @@
     });
     
     $(document).on('pagebeforeshow', '#rank-page', function () {
-        getRankings(globalAds);
+        getMyRankings(globalAds);
     });
     
     $(document).on('click', '#btnReport', function () {
@@ -509,7 +510,7 @@ infowindow.open(map, marker);
             
             <div style="background-color: #002663; color: #ffffff; padding: 10px; text-align: center; font-style: bold;">Your Rank</div>
             <ul data-role="listview" data-filter="false" data-inset="true">
-               <li>Prasanthan Jayaram - 1643 Leads</li> 
+               <li id="myRank">Prasanthan Jayaram - 1643 Leads</li> 
             </ul>
             
             
