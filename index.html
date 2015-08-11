@@ -69,6 +69,42 @@
             background-color: rgba(0,0,0,0.5); /*dim the background*/
             background: rgba(0,0,0,0.5) url('img/ajax-loader.gif') no-repeat center;
       }
+      
+      .rank_child{
+          float:left;
+          margin-right:5px;
+      }
+      
+      .rank_parent{
+          width: 100%;
+          margin-right:10px;
+    float:left;
+      }
+      
+      #rank1 {
+          background: url('img/star.png') repeat-x;
+          width: 80px;   
+      }
+      
+      #rank2 {
+          background: url('img/star.png') repeat-x;
+          width: 64px;   
+      }
+      
+      #rank3 {
+          background: url('img/star.png') repeat-x;
+          width: 48px;   
+      }
+      
+      #rank4 {
+          background: url('img/star.png') repeat-x;
+          width: 32px;   
+      }
+      
+      #rank5 {
+          background: url('img/star.png') repeat-x;
+          width: 16px;   
+      }
      
     </style>
    
@@ -81,6 +117,7 @@
     <script type="text/javascript" charset="utf-8">
 
     var reportObj;
+    var globalAds;
     
     function setReportObj(placeName, placeAddr) {
         reportObj = new Object();
@@ -88,11 +125,23 @@
         reportObj.placeAddr = placeAddr;
     }
     
+    function getRankings(adsId) {
+        $.ajax({
+            type: "GET",
+            url: 'http://1-dot-hack2015-1029.appspot.com/GetLeads',
+            data: { "adsID": adsId },
+            dataType: "json",
+            success: function(data) {
+                alert(data.result.name + ":" + data.result.leads);
+            }
+        });
+    }
+    
     function submitReport() {
         
         $('#overlayReport').css('display', 'block');
         
-        var adsId = "6381399";
+        var adsId = "mvahee";
         var employeeEmail = "Prasanthan.Jayaram@aexp.com";
         var placeName = reportObj.placeName;
         var placeAddr = reportObj.placeAddr;
@@ -110,7 +159,6 @@
             success: function(data){
                 //Show message
                 //alert("Your report has been submitted.");
-                alert(data);
                 $('#overlayReport').css('display', 'none');
                 $('#lblResponse').text("Your report has been submitted!");
             }
@@ -156,11 +204,32 @@
         $(document).on('click', '.btn', function() {
             $.mobile.changePage($("#report-details-page"), { transition: "slideup"}); 
         });
+        
+        $(document).on('click', '#manualReport', function() {
+            $.mobile.changePage($("#report-details-page"), { transition: "slideup"}); 
+        });
+        
+        $(document).on('click', '#btnLogin', function() {
+            globalAds = $('#user_name').val();
+            $.mobile.changePage($("#map-page"), { transition: "slideup"});
+        });
     });
     
+    $(document).on('pagebeforeshow', '#map-page', function () {
+        navigator.geolocation.getCurrentPosition(onSuccess, onError);
+        
+    });
+    
+    
     $(document).on('pagebeforeshow', '#report-details-page', function () {
-        $('#place_name').val(reportObj.placeName);
-        $('#place_address').val(reportObj.placeAddr);
+        if (reportObj != null) {
+            $('#place_name').val(reportObj.placeName);
+            $('#place_address').val(reportObj.placeAddr);
+        }
+    });
+    
+    $(document).on('pagebeforeshow', '#rank-page', function () {
+        getRankings(globalAds);
     });
     
     $(document).on('click', '#btnReport', function () {
@@ -186,11 +255,14 @@
                             'Device Version: '  + device.version  + '<br />';
          */
         
-        navigator.geolocation.getCurrentPosition(onSuccess, onError);
+        //navigator.geolocation.getCurrentPosition(onSuccess, onError);
+        //alert('device ready');
+        
         
     }
     
     function onSuccess(position) {
+       // alert('succ');
         var latLang = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
         var mapOptions = {
             center: latLang,
@@ -361,25 +433,96 @@ infowindow.open(map, marker);
 </head>
 <body>
     
-    <!-- Main Map Page -->
-    <div data-role="page" id="map-page">
+    <!-- Login Page -->
+    <div data-role="page" id="login-page">
         <div data-role="header">
             <h3>Brand Ambassador</h3>
+        </div>
+        <div data-role="content">
+            <ul data-role="listview" data-filter="false" data-inset="true">
+                <li>
+                    <label for="user_name" style="font-size: smaller">Username:</label>
+                    <input type="text" name="user_name" id="user_name" value="" data-mini="true" />
+                </li>
+                <li>
+                    <label for="password" style="font-size: smaller">Password:</label>
+                    <input type="password" name="password" id="password" value="" data-mini="true" />
+                </li>
+                <li>
+                   <input id="btnLogin" type="button" value="Signin" />
+                </li>
+            </ul>
+           
+        </div>
+    </div>
+    
+    <!-- End Map Page -->
+    
+    <!-- Main Map Page -->
+    <div data-role="page" class="ui-responsive-panel" id="map-page" data-title="Panel responsive page" data-url="map-page">
+        <div data-role="header">
+            <h3>Brand Ambassador</h3>
+            <a href="#nav-panel" data-icon="bars" data-iconpos="notext">Menu</a>
             <img src="img/user.png" class="ui-btn-right" style="width: 42px;" />
         </div>
         <div data-role="content">
             <div id="overlay" class="overlay" ></div>
             <input id="pac-input" class="controls" type="text"
                 placeholder="Enter a location" />
-            <div id="map_canvas">getting map data</div>
+            <div id="map_canvas"></div>
            
         </div>
       
         <div data-role="footer" class="ui-bar">
-            <a href="index.html" data-role="button" data-icon="plus" data-mini="true" style="padding-top: 2px; padding-bottom: 2px;">Add</a>
+            <a id = "manualReport" href="#" data-role="button" data-icon="plus" data-mini="true" style="padding-top: 2px; padding-bottom: 2px;">Manual Report</a>
         </div>
     </div>
+    
     <!-- End Map Page -->
+    
+    <!-- Side Panel -->
+    <div data-role="panel" data-display="overlay" data-theme="a" id="nav-panel">
+        <ul data-role="listview">
+            <li data-icon="delete"><a href="#map-page" data-rel="close">Close menu</a></li>
+            <li><a href="#rank-page">Leader Board</a></li>
+        </ul>
+    </div>
+    <!-- /panel -->
+    
+    <!-- End Side Panel -->
+    
+    <!-- Rank Page -->
+    <div data-role="page" data-url="rank-page" id="rank-page">
+        <div data-role="header">
+            <a href="#map-page" data-icon="arrow-l" data-iconpos="notext">Back</a>
+            <h3>Leader board Rankings</h3>
+            <img src="img/user.png" class="ui-btn-right" style="width: 42px;" />
+        </div>
+        <div data-role="content">
+            <div id="lbOverlay" class="overlay" style="display:none"></div>
+            
+            <div style="background-color: #002663; color: #ffffff; padding: 10px; text-align: center; font-style: bold;">Your Rank</div>
+            <ul data-role="listview" data-filter="false" data-inset="true">
+               <li>Prasanthan Jayaram - 1643 Leads</li> 
+            </ul>
+            
+            
+            <div style="background-color: #002663; color: #ffffff; padding: 10px; text-align: center; font-style: bold;">Top-5 Rankings</div>
+            <ul data-role="listview" data-filter="false" data-inset="true">
+                <li><div class="rank_parent"><div id="rank1">&nbsp;</div><div class="rank_child">Prasanthan Jayaram - 1643 Leads</div></div></li>
+                <li><div class="rank_parent"><div id="rank2">&nbsp;</div><div class="rank_child">Mahen Vahee - 1025 Leads</div></div></li>
+                <li><div class="rank_parent"><div id="rank3">&nbsp;</div><div class="rank_child">Kiran Mutyala - 876 Leads</div></div></li>
+                <li><div class="rank_parent"><div id="rank4">&nbsp;</div><div class="rank_child">Wasie Bala - 600 Leads</div></div></li>
+                <li><div class="rank_parent"><div id="rank5">&nbsp;</div><div class="rank_child">Paul Ryan - 250 Leads</div></div></li>
+            </ul>
+            
+            
+           
+        </div>
+      
+    </div>
+    
+    <!-- End Rank Page -->
     
     <!-- Report Details Screen -->
     <div data-role="page" id="report-details-page">
