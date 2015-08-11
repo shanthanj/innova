@@ -8,10 +8,10 @@
 
     <preference name="phonegap-version" value="3.7.0" />
     
-    <name>Innova</name>
+    <name>BRAND-EX</name>
 
     <description>
-        Innova config
+        BRANDEX mobile application is part of the AMEX Ambassador Program
     </description>
 
     <author href="http://phonegap.com" email="support@phonegap.com">
